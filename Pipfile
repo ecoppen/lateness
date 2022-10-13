@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+jinja2 = "*"
+psycopg2-binary = "*"
+requests = "*"
+sqlalchemy = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+
+[dev-packages]
+bandit = "*"
+black = "*"
+flake8 = "*"
+isort = "*"
+mkdocs-material = "*"
+mypy = "*"
+pre-commit = "*"
+sqlalchemy = {extras = ["mypy"], version = "*"}
+
+[requires]
+python_version = "3.10"
