@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block page_content %}
+{% if error|length > 0 %}
+<div class="alert alert-danger" role="alert">Error: {{error}}</div>
+{% endif %}
+<div class="row align-items-md-stretch">
+  <div class="col-md-12">
+    <div class="h-100 p-5 border rounded-3">
+      <h2>{{data['form']}}</h2>
+      <div class="row">
+      {% for students in data["students"] %}
+      <div class="col">
+        <div class="d-grid gap-2">
+          {% for student in students %}
+            <a href="/student?upn={{student['UPN']}}" class="btn btn-outline-light btn-lg" type="button">{{student['Forename']}} {{student['Surname']}}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
