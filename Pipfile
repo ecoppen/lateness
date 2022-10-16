@@ -6,12 +6,9 @@ name = "pypi"
 [packages]
 fastapi = "*"
 jinja2 = "*"
-psycopg2-binary = "*"
-requests = "*"
-sqlalchemy = "*"
-uvicorn = {extras = ["standard"], version = "*"}
-pymysql = "*"
 numpy = "*"
+requests = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 bandit = "*"
@@ -21,7 +18,6 @@ isort = "*"
 mkdocs-material = "*"
 mypy = "*"
 pre-commit = "*"
-sqlalchemy = {extras = ["mypy"], version = "*"}
 
 [requires]
 python_version = "3.10"
