@@ -7,6 +7,7 @@ name = "pypi"
 fastapi = "*"
 jinja2 = "*"
 numpy = "*"
+pydantic = "*"
 requests = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 
