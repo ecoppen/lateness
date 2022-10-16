@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block page_content %}
+{% if error|length > 0 %}
+<div class="alert alert-danger" role="alert">Error: {{error}}</div>
+{% endif %}
+<div class="row align-items-md-stretch">
+  <div class="col-md-6">
+    <div class="h-100 p-5 border rounded-3">
+      <h2>Scan card</h2>
+      <p>
+        <div class="input-group mb-3 input-group-lg">
+          <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-id-card-clip"></i></span>
+          <input type="text" class="form-control" id="cardid" placeholder="Scan card" aria-label="card_id" aria-describedby="basic-addon1">
+        </div>
+      </p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="h-100 p-5 border rounded-3">
+      <h2>Year groups</h2>
+      <div class="d-grid gap-2">
+        {% for year in data["years"] %}
+          <a href="/forms?year={{year}}" class="btn btn-outline-light btn-lg" type="button">Year {{year}}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    document.getElementById("cardid").focus();
+  });
+</script>
+{% endblock %}
