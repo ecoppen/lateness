@@ -1,0 +1,11 @@
+{
+  "database": {
+    "engine": "postgres",
+    "username": "postgres",
+    "password": "",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "name": "db_lateness"
+  },
+  "api_get": "127.0.0.1"
+}
