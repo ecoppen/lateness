@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block page_content %}
+{% if error|length > 0 %}
+<div class="alert alert-danger" role="alert">Error: {{error}}</div>
+{% endif %}
+<div class="row align-items-md-stretch">
+  <div class="col-md-12">
+    <div class="h-100 p-5 border rounded-3">
+      <h2>Form groups</h2>
+      <div class="row">
+      {% for forms in data["forms"] %}
+      <div class="col">
+        <div class="d-grid gap-2">
+          {% for form in forms %}
+            <a href="/form?form={{form}}" class="btn btn-outline-light btn-lg" type="button">{{form}}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
