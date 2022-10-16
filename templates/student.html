@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block page_content %}
+{% if error|length > 0 %}
+<div class="alert alert-danger" role="alert">Error: {{error}}</div>
+{% endif %}
+<div class="row align-items-md-stretch">
+  <div class="col-md-6">
+    <div class="h-100 p-5 border rounded-3">
+      <div class="card mb-3 text-bg-light">
+        <div class="row g-0">
+          <div class="col-md-4">
+            {% if data["photo"] == "" %}
+              <img class="img-fluid rounded-start" width="150%" src="{{ url_for('static', path='/images/placeholder.png') }}">
+            {% else %}
+              <img class="img-fluid rounded-start" width="150%" src="{{ data['photo'] }}">
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h4 class="card-title">{{data["information"]["Forename"]}} {{data["information"]["Surname"]}}</h4>
+              <br>
+              <h5 class="card-text text-start">Date of Birth: {{data["information"]["DOB"]}}</h5>
+              <h5 class="card-text text-start">Gender: {{data["information"]["Gender"]}}</h5>
+              <h5 class="card-text text-start">Form group: {{data["information"]["Reg"]}}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="h-100 p-5 border rounded-3">
+      <h2>Log lateness</h2>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
