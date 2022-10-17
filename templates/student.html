@@ -51,22 +51,24 @@
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('PM')" type="button">Public transport - missed</button></div>
       </div>
       <br>
-      <div class="row">
-        <input type="text" class="form-control form-control-lg" id="reason" name="reason" maxlength="100" placeholder="Reason for lateness">
-      </div>
-      <br>
-      <div class="row">
-        <div class="col">
-          <div class="d-grid gap-2">
-            <input class="btn btn-danger" type="reset" value="Reset">
+      <form method="POST" action="{{url_for('lateness_send')}}?upn={{data['upn']}}">
+        <div class="row">
+          <input type="text" class="form-control form-control-lg" id="reason" name="reason" maxlength="100" placeholder="Reason for lateness" required>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col">
+            <div class="d-grid gap-2">
+              <input class="btn btn-danger" type="reset" value="Reset">
+            </div>
+          </div>
+          <div class="col">
+            <div class="d-grid gap-2">
+              <input class="btn btn-success" type="submit" value="Submit">
+            </div>
           </div>
         </div>
-        <div class="col">
-          <div class="d-grid gap-2">
-            <input class="btn btn-success" type="submit" value="Submit">
-          </div>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>
