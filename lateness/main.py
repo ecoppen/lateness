@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Union
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -91,7 +91,7 @@ def read_form(request: Request, form: str, error: str = ""):
 
 @app.get("/student", response_class=HTMLResponse)
 def read_student(request: Request, upn: str, error: str = ""):
-    data: dict = {"page": "student", "photo": "", "information": {}}
+    data: dict = {"page": "student", "photo": "", "upn": upn, "information": {}}
     if len(upn) != 13:
         return read_root(
             request=request, error=f"{upn} is invalid - it must be 13 characters long"
@@ -187,3 +187,44 @@ def check_image_exists(upn: str):
     if header in image_formats:
         return True
     return False
+
+
+@app.post("/lateness_send")
+async def lateness_send(request: Request, upn: str, reason: str = Form()):
+    today = datetime.now()
+    start_time = datetime.combine(today, config.start_time)
+    end_time = datetime.combine(today, config.end_time)
+
+    if today < start_time or today > end_time:
+        return read_student(
+            request=request,
+            upn=upn,
+            error="Current time is outside the lateness logging hours",
+        )
+
+    if len(upn) != 13:
+        return read_root(
+            request=request, error=f"{upn} is invalid - it must be 13 characters long"
+        )
+
+    upn_check = get_details_from_upn(upn=upn)
+    if "Forename" not in upn_check:
+        return read_root(request=request, error=f"Student with upn {upn} not found")
+    if len(upn_check["Forename"]) < 1:
+        return read_root(
+            request=request, error=f"Student with upn {upn} does not  exist"
+        )
+
+    last_lateness = database.get_last_lateness(upn)
+    if last_lateness is not None:
+        if last_lateness[3].date() == datetime.today().date():
+            return read_student(
+                request=request,
+                upn=upn,
+                error="Student has already been logged late for today",
+            )
+        database.insert_lateness(upn=upn, reason=reason)
+    else:
+        database.insert_lateness(upn=upn, reason=reason)
+
+    return {"reason": reason, "upn": upn, "now": today}
