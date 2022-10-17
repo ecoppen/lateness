@@ -7,5 +7,7 @@
     "port": 5432,
     "name": "db_lateness"
   },
-  "api_get": "127.0.0.1"
+  "api_get": "127.0.0.1",
+  "start_time": "08:40",
+  "end_time": "14:40"
 }
