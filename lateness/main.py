@@ -91,6 +91,14 @@ def read_form(request: Request, form: str, error: str = ""):
     )
 
 
+@app.post("/scan_student")
+async def scan_student(request: Request, cardid: str = Form()):
+    upn = get_upn_from_card(card=cardid)
+    if len(upn["UPN"]) < 1:
+        return read_root(request=request, error="Card is invalid")
+    return read_student(request=request, upn=upn["UPN"])
+
+
 @app.get("/student", response_class=HTMLResponse)
 def read_student(request: Request, upn: str, error: str = ""):
     data: dict = {"page": "student", "photo": "", "upn": upn, "information": {}}
