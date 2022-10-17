@@ -7,11 +7,12 @@ name = "pypi"
 fastapi = "*"
 jinja2 = "*"
 numpy = "*"
-pydantic = "*"
-requests = "*"
-uvicorn = {extras = ["standard"], version = "*"}
 psycopg2-binary = "*"
+pydantic = "*"
+python-multipart = "*"
+requests = "*"
 sqlalchemy = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 bandit = "*"
