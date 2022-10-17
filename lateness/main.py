@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -41,12 +42,13 @@ database = Database(config=config.database)
 
 
 @app.get("/", response_class=HTMLResponse)
-def read_root(request: Request, error: str = ""):
+def read_root(request: Request, error: str = "", success: str = ""):
     data: dict = {"page": "index", "years": []}
     years = get_year_data()
     data["years"] = years["years"]
     return templates.TemplateResponse(
-        "index.html", {"request": request, "data": data, "error": error}
+        "index.html",
+        {"request": request, "data": data, "error": error, "success": success},
     )
 
 
@@ -227,4 +229,27 @@ async def lateness_send(request: Request, upn: str, reason: str = Form()):
     else:
         database.insert_lateness(upn=upn, reason=reason)
 
-    return {"reason": reason, "upn": upn, "now": today}
+    data: dict = {
+        "upn": upn,
+        "reason": reason,
+        "datetime": today.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    encoded_data = urllib.parse.urlencode(data).encode()
+    url_string = f"http://{config.api_get}/lateness_add_instance.php"
+    req = urllib.request.Request(url_string, data=encoded_data, method="POST")
+    response = urllib.request.urlopen(req)  # nosec
+    response_code = response.read().decode("utf-8")
+    if response_code == "1":
+        log.info(f"Lateness logged for {upn}")
+        return read_root(
+            request=request,
+            success=f"Instance of lateness saved for {upn_check['Forename']}",
+        )
+    else:
+        log.warning(
+            f"Lateness not logged for {upn} with reason {reason} on {datetime} - code: {response_code}"
+        )
+        return read_root(
+            request=request,
+            error=f"Instance of lateness not saved for {upn_check['Forename']}, see logs",
+        )
