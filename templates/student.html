@@ -38,7 +38,35 @@
   <div class="col-md-6">
     <div class="h-100 p-5 border rounded-3">
       <h2>Log lateness</h2>
-
+      <br>
+      <div class="row">
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('NR')" type="button">No reason</button></div>
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('O')" type="button">Overslept</button></div>
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('T')" type="button">Traffic</button></div>
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('U')" type="button">Unwell</button></div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('PD')" type="button">Public transport - delayed</button></div>
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('PM')" type="button">Public transport - missed</button></div>
+      </div>
+      <br>
+      <div class="row">
+        <input type="text" class="form-control form-control-lg" id="reason" name="reason" maxlength="100" placeholder="Reason for lateness">
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <div class="d-grid gap-2">
+            <input class="btn btn-danger" type="reset" value="Reset">
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-grid gap-2">
+            <input class="btn btn-success" type="submit" value="Submit">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -46,4 +74,34 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+  $(document).ready(function () {
+    document.getElementById("reason").focus();
+  });
+
+  function autoReason(reason) {
+    let x = "";
+    switch(reason) {
+      case 'NR':
+        x = "No reason";
+        break;
+      case 'O':
+        x = "Overslept";
+        break;
+      case 'T':
+        x = "Traffic";
+        break;
+      case 'U':
+        x = "Unwell";
+        break;
+      case 'PD':
+        x = "Public transport was delayed";
+        break;
+      case 'PM':
+        x= "Public transport was missed";
+        break;
+    }
+    document.getElementById("reason").value += x;
+  }
+</script>
 {% endblock %}
