@@ -14,6 +14,7 @@ from fastapi.templating import Jinja2Templates
 
 from lateness.core.config import load_config
 from lateness.core.utils import chunks
+from lateness.models.database import Database
 
 logs_file = Path(Path().resolve(), "log.txt")
 logs_file.touch(exist_ok=True)
@@ -33,8 +34,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 config_path = Path(Path().resolve(), "config", "config.json")
-config = load_config(config_path)
+config = load_config(path=config_path)
 log.info(f"{config_path} loaded")
+
+database = Database(config=config.database)
 
 
 @app.get("/", response_class=HTMLResponse)
