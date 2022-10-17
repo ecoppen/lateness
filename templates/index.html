@@ -27,9 +27,15 @@
   <div class="col-md-6">
     <div class="h-100 p-5 border rounded-3">
       <h2>Year groups</h2>
-      <div class="d-grid gap-2">
-        {% for year in data["years"] %}
-          <a href="/forms?year={{year}}" class="btn btn-outline-light btn-lg" type="button">Year {{year}}</a>
+      <div class="row">
+      {% for years in data["years"] %}
+      <div class="col">
+        <div class="d-grid gap-2">
+        {% for year in years %}
+          <a href="/forms?year={{year}}" class="btn btn-outline-light btn-lg" type="button">{{year}}</a>
+        {% endfor %}
+        </div>
+      </div>
         {% endfor %}
       </div>
     </div>
