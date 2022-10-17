@@ -45,7 +45,7 @@ database = Database(config=config.database)
 def read_root(request: Request, error: str = "", success: str = ""):
     data: dict = {"page": "index", "years": []}
     years = get_year_data()
-    data["years"] = years["years"]
+    data["years"] = chunks(years["years"], 2)
     return templates.TemplateResponse(
         "index.html",
         {"request": request, "data": data, "error": error, "success": success},
@@ -85,7 +85,7 @@ def read_form(request: Request, form: str, error: str = ""):
     if len(form_group["students"]) < 1:
         return read_forms(year=year, error=f"There are no students in {form_group}")
     form_group["students"].sort(key=lambda k: k["Surname"])
-    data["students"] = chunks(lst=form_group["students"], n=4)
+    data["students"] = chunks(lst=form_group["students"], n=3)
     return templates.TemplateResponse(
         "form.html", {"request": request, "data": data, "error": error}
     )
