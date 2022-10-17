@@ -45,3 +45,12 @@ class Database:
     def get_table_object(self, table_name: str):
         self.Base.metadata.reflect(self.engine)  # type: ignore
         return self.Base.metadata.tables.get(table_name)  # type: ignore
+
+    def get_last_lateness(self, upn: str):
+        table_object = self.get_table_object(table_name="lateness_log")
+        return self.session.query(table_object).filter_by(upn=upn).first()
+
+    def insert_lateness(self, upn: str, reason: str):
+        table_object = self.get_table_object(table_name="lateness_log")
+        self.engine.execute(table_object.insert().values(upn=upn, reason=reason))
+        log.info(f"Inserted into lateness_log. UPN: {upn}, Reason: {reason}")
