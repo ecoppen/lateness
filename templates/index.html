@@ -17,10 +17,12 @@
     <div class="h-100 p-5 border rounded-3">
       <h2>Scan card</h2>
       <p>
+      <form method="POST" id="submit_form" action="{{url_for('scan_student')}}">
         <div class="input-group mb-3 input-group-lg">
           <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-id-card-clip"></i></span>
-          <input type="text" class="form-control" id="cardid" placeholder="Scan card" aria-label="card_id" aria-describedby="basic-addon1">
+          <input type="text" class="form-control" name="cardid" id="cardid" placeholder="Scan card" aria-label="card_id" aria-describedby="basic-addon1">
         </div>
+    </form>
       </p>
     </div>
   </div>
@@ -49,5 +51,13 @@
   $(document).ready(function () {
     document.getElementById("cardid").focus();
   });
+
+  const text = document.getElementById("cardid");
+  const form = document.getElementById("submit_form");
+  text.onkeyup = function() {
+    if( text.value.length === 10 ) {
+      form.submit();
+    }
+  }
 </script>
 {% endblock %}
