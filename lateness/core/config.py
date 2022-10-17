@@ -1,6 +1,7 @@
 import json
+from datetime import time
 from enum import Enum
-from typing import Dict, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Extra, Field, IPvAnyAddress, ValidationError, validator
 
@@ -22,6 +23,8 @@ class Database(BaseModel, use_enum_values=True, extra=Extra.forbid):  # type: ig
 class Config(BaseModel, extra=Extra.forbid):  # type: ignore
     database: Database
     api_get: IPvAnyAddress = IPvAnyAddress.validate("10.192.41.212")  # type: ignore
+    start_time: time = time(hour=8, minute=40)
+    end_time: time = time(hour=14, minute=40)
 
 
 def load_config(path):
