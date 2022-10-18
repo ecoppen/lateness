@@ -40,6 +40,7 @@
       <h3>Log lateness</h3>
       <br>
       <div class="row">
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('A')" type="button">Appointment</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('NR')" type="button">No reason</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('O')" type="button">Overslept</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('T')" type="button">Traffic</button></div>
@@ -50,7 +51,7 @@
       <br>
       <form method="POST" action="{{url_for('lateness_send')}}?upn={{data['upn']}}">
         <div class="row">
-          <input type="text" class="form-control form-control-lg" id="reason" name="reason" maxlength="100" placeholder="Reason for lateness" required>
+          <input type="text" class="form-control form-control-lg" id="reason" name="reason" maxlength="100" placeholder="Reason for lateness" autocomplete="off" required>
         </div>
         <br>
         <div class="row">
@@ -81,6 +82,9 @@
   function autoReason(reason) {
     let x = "";
     switch(reason) {
+      case 'A':
+        x = "Appointment ";
+        break;
       case 'NR':
         x = "No reason ";
         break;
