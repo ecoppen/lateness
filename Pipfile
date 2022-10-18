@@ -19,7 +19,6 @@ bandit = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
-mkdocs-material = "*"
 mypy = "*"
 pre-commit = "*"
 sqlalchemy = {extras = ["mypy"], version = "*"}
