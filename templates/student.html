@@ -16,9 +16,9 @@
         <div class="row g-0">
           <div class="col-md-4">
             {% if data["photo"] == "" %}
-              <img class="img-fluid rounded-start" width="150%" src="{{ url_for('static', path='/images/placeholder.png') }}">
+              <img class="img-fluid rounded-start" alt="placeholder image" width="150%" src="{{ url_for('static', path='/images/placeholder.png') }}">
             {% else %}
-              <img class="img-fluid rounded-start" width="150%" src="{{ data['photo'] }}">
+              <img class="img-fluid rounded-start" alt="student image" width="150%" src="{{ data['photo'] }}">
             {% endif %}
           </div>
           <div class="col-md-8">
@@ -40,6 +40,7 @@
       <div class="row">
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('A')" type="button">Appointment</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('NR')" type="button">No reason</button></div>
+        <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('Ot')" type="button">Other</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('O')" type="button">Overslept</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('T')" type="button">Traffic</button></div>
         <div class="col"><button class="btn btn-outline-light btn-lg" onclick="autoReason('U')" type="button">Unwell</button></div>
@@ -88,6 +89,9 @@
         break;
       case 'O':
         x = "Overslept ";
+        break;
+      case 'Ot':
+        x = "Other ";
         break;
       case 'T':
         x = "Traffic ";
