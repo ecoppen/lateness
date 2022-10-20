@@ -44,11 +44,25 @@ database = Database(config=config.database)
 @app.get("/", response_class=HTMLResponse)
 def read_root(request: Request, error: str = "", success: str = ""):
     data: dict = {"page": "index", "years": []}
-    years = get_year_data()
+    try:
+        years = get_year_data()
+    except OSError:
+        return refresh(request=request)
+    except urllib.error.HTTPError:
+        return refresh(request=request)
     data["years"] = chunks(years["years"], 2)
     return templates.TemplateResponse(
         "index.html",
         {"request": request, "data": data, "error": error, "success": success},
+    )
+
+
+@app.get("/refresh", response_class=HTMLResponse)
+def refresh(request: Request):
+    data: dict = {"page": "refresh"}
+    return templates.TemplateResponse(
+        "refresh.html",
+        {"request": request, "data": data},
     )
 
 
