@@ -10,8 +10,6 @@ A python (3.10+) and Fastapi script to log lateness
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
-uvicorn lateness.main:app --reload
-
 ### Prerequisites
 This program was written to connect to a school API to log student lateness using a touch screen, card reader and Raspberry Pi.
 - Raspberry pi - `https://thepihut.com/products/raspberry-pi-4-model-b`
@@ -44,3 +42,6 @@ Exec=/bin/bash /path/to/boot.sh
 @xset s noblank
 @chromium-browser --kiosk http://127.0.0.1:8000
 ```
+
+### Developers
+When running this for testing or development purposes, run uvicorn with reload `uvicorn lateness.main:app --reload`
