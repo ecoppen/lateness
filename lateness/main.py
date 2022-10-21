@@ -46,9 +46,11 @@ def read_root(request: Request, error: str = "", success: str = ""):
     data: dict = {"page": "index", "years": []}
     try:
         years = get_year_data()
-    except OSError:
+    except OSError as e:
+        log.warning(f"OSError: {e}")
         return refresh(request=request)
-    except urllib.error.HTTPError:
+    except urllib.error.HTTPError as e:
+        log.warning(f"HTTPError: {e}")
         return refresh(request=request)
     data["years"] = chunks(years["years"], 2)
     return templates.TemplateResponse(
@@ -197,6 +199,15 @@ def get_details_from_upn(upn: str):
     return data
 
 
+@app.get("/check_lateness_logged")
+def check_lateness_logged(upn: str):
+    url_string = f"http://{config.api_get}/lateness_upn_logged_today.php?upn={upn}"
+    log.info(f"Requesting: {url_string}")
+    with urllib.request.urlopen(url_string) as url:  # nosec
+        data = json.load(url)
+    return data
+
+
 @app.get("/check_image_exists")
 def check_image_exists(upn: str):
     if len(upn) != 13:
@@ -220,6 +231,7 @@ async def lateness_send(request: Request, upn: str, reason: str = Form()):
     end_time = datetime.combine(today, config.end_time)
 
     if today < start_time or today > end_time:
+        log.warning(f"Lateness log was attempted at {today} for {upn}")
         return read_student(
             request=request,
             upn=upn,
@@ -234,20 +246,19 @@ async def lateness_send(request: Request, upn: str, reason: str = Form()):
     upn_check = get_details_from_upn(upn=upn)
     if "Forename" not in upn_check:
         return read_root(request=request, error=f"Student with upn {upn} not found")
+
     if len(upn_check["Forename"]) < 1:
         return read_root(
             request=request, error=f"Student with upn {upn} does not  exist"
         )
 
-    last_lateness = database.get_last_lateness(upn)
-    if last_lateness is not None:
-        if last_lateness[3].date() == datetime.today().date():
-            return read_student(
-                request=request,
-                upn=upn,
-                error="Student has already been logged late for today",
-            )
-        database.insert_lateness(upn=upn, reason=reason)
+    last_lateness = check_lateness_logged(upn=upn)
+    if last_lateness["Found"]:
+        return read_student(
+            request=request,
+            upn=upn,
+            error="Student has already been logged late for today",
+        )
     else:
         database.insert_lateness(upn=upn, reason=reason)
 
