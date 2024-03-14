@@ -3,7 +3,7 @@ from datetime import time
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Extra, Field, IPvAnyAddress, ValidationError, validator
+from pydantic import BaseModel, Extra, Field, HttpUrl, ValidationError
 
 
 class Databases(Enum):
@@ -15,14 +15,14 @@ class Database(BaseModel, use_enum_values=True, extra=Extra.forbid):  # type: ig
     engine: str = Databases.SQLITE  # type: ignore
     username: Optional[str]
     password: Optional[str]
-    host: Optional[IPvAnyAddress] = IPvAnyAddress.validate("127.0.0.1")  # type: ignore
+    host: Optional[HttpUrl] = "127.0.0.1"  # type: ignore
     port: Optional[int] = Field(5432, ge=1, le=65535)
     name: str = "db_lateness"
 
 
 class Config(BaseModel, extra=Extra.forbid):  # type: ignore
     database: Database
-    api_get: IPvAnyAddress = IPvAnyAddress.validate("10.192.41.212")  # type: ignore
+    api_get: HttpUrl = "10.192.41.212"  # type: ignore
     start_time: time = time(hour=8, minute=40)
     end_time: time = time(hour=14, minute=40)
 
