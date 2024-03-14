@@ -17,11 +17,13 @@ uvicorn = {extras = ["standard"], version = "*"}
 [dev-packages]
 bandit = "*"
 black = "*"
-flake8 = "*"
-isort = "*"
+codecov = "*"
+freezegun = "*"
 mypy = "*"
 pre-commit = "*"
+pytest-cov = "*"
 sqlalchemy = {extras = ["mypy"], version = "*"}
+ruff = "*"
 
 [requires]
 python_version = "3.11"
