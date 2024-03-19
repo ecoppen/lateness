@@ -1,5 +1,4 @@
 import logging
-import re
 from datetime import datetime
 
 import sqlalchemy as db
@@ -9,6 +8,15 @@ from sqlalchemy.orm import sessionmaker
 from lateness.core.config import Database as Database_
 
 log = logging.getLogger(__name__)
+
+
+class Lateness(declarative_base()):  # type: ignore
+    __tablename__ = "lateness_log"
+
+    id = db.Column(db.Integer, primary_key=True)
+    upn = db.Column(db.String)
+    reason = db.Column(db.String)
+    timestamp = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
 class Database:
@@ -51,6 +59,7 @@ class Database:
         return self.session.query(table_object).filter_by(upn=upn).first()
 
     def insert_lateness(self, upn: str, reason: str):
-        table_object = self.get_table_object(table_name="lateness_log")
-        self.engine.execute(table_object.insert().values(upn=upn, reason=reason))
+        new_entry = Lateness(upn=upn, reason=reason)
+        self.session.add(new_entry)
+        self.session.commit()
         log.info(f"Inserted into lateness_log. UPN: {upn}, Reason: {reason}")
